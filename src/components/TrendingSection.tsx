@@ -1,66 +1,52 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Star, Users, ChevronLeft, ChevronRight } from 'lucide-react';
-
-const trendingTools = [
-  {
-    id: "1",
-    name: 'ChatGPT-4',
-    description: 'Advanced language model with enhanced reasoning and creativity capabilities.',
-    category: 'Text Generation',
-    rating: 4.9,
-    users: '2M+',
-    image: 'https://images.unsplash.com/photo-1676320181466-7a364d4e2c53'
-  },
-  {
-    id: "2",
-    name: 'Midjourney V6',
-    description: 'State-of-the-art AI image generation with unprecedented quality and control.',
-    category: 'Image Generation',
-    rating: 4.8,
-    users: '1.5M+',
-    image: 'https://images.unsplash.com/photo-1686591994509-51d16087bf05'
-  },
-  {
-    id: "3",
-    name: 'Claude 3',
-    description: 'Advanced AI assistant with superior analytical and coding capabilities.',
-    category: 'Text Generation',
-    rating: 4.7,
-    users: '800K+',
-    image: 'https://images.unsplash.com/photo-1684163761883-6019891f7332'
-  },
-  {
-    id: "4",
-    name: 'Gemini Pro',
-    description: 'Multimodal AI model excelling in complex reasoning and analysis.',
-    category: 'Text Generation',
-    rating: 4.6,
-    users: '1.2M+',
-    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995'
-  },
-  {
-    id: "5",
-    name: 'Stable Video XL',
-    description: 'Advanced AI model for high-quality video generation and editing.',
-    category: 'Video Generation',
-    rating: 4.5,
-    users: '500K+',
-    image: 'https://images.unsplash.com/photo-1682687220742-aba19b51f318'
-  },
-  {
-    id: "6",
-    name: 'AudioCraft',
-    description: 'Next-generation AI model for music and sound generation.',
-    category: 'Audio Generation',
-    rating: 4.4,
-    users: '300K+',
-    image: 'https://images.unsplash.com/photo-1685446661741-00a8c557fe80'
-  }
-];
+import getAiResponse from '../services/ai-chat-services';
+import { trendingToolsPrompt } from '../config/prompt';
 
 export function TrendingSection() {
+  const [trendingTools, setTrendingTools] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const total = trendingTools.length;
+
+  useEffect(() => {
+    const fetchTrendingTools = async () => {
+      setLoading(true);
+      setError(null); // Clear any previous errors
+      try {
+        const prompt = trendingToolsPrompt('');
+        const response = await getAiResponse(prompt);
+        console.log(prompt, response);
+
+        // // Check if the response is empty or obviously invalid
+        // if (!response || typeof response !== 'string' || response.trim() === '') {
+        //   throw new Error("Invalid AI response: Empty or not a string");
+        // }
+
+        // // Basic check to see if the response looks like JSON
+        // if (!response.trim().startsWith('[') && !response.trim().startsWith('{')) {
+        //     throw new Error("Invalid AI response: Does not look like JSON");
+        // }
+
+        const tools = eval(response);
+
+        // Check if the parsed result is an array
+        if (!Array.isArray(tools)) {
+            throw new Error("Invalid AI response: Parsed result is not an array");
+        }
+        setTrendingTools(tools);
+      } catch (error: any) {
+        console.error("Failed to fetch trending tools:", error);
+        setError(error.message || "Failed to fetch trending tools."); // Set the error message
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTrendingTools();
+  }, []);
+
   // Determine 3 visible tools, wrapping around if needed
   const visibleTools = [];
   for (let i = 0; i < 3; i++) {
@@ -69,6 +55,24 @@ export function TrendingSection() {
 
   const handlePrev = () => setCurrentIndex((prev) => (prev - 3 + total) % total);
   const handleNext = () => setCurrentIndex((prev) => (prev + 3) % total);
+
+  if (loading) {
+    return (
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-8 relative">
+        <h2 className="text-2xl font-bold mb-6 text-gray-900">Trending Now</h2>
+        <p>Loading trending tools...</p>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-8 relative">
+        <h2 className="text-2xl font-bold mb-6 text-gray-900">Trending Now</h2>
+        <p className="text-red-500">Error: {error}</p>
+      </section>
+    );
+  }
 
   return (
     <section className="max-w-7xl mx-auto px-4 sm:px-6 py-8 relative">
@@ -82,7 +86,7 @@ export function TrendingSection() {
             >
               <div className="relative aspect-video">
                 <img
-                  src={tool.image}
+                  src={tool.logoUrl}
                   alt={tool.name}
                   className="w-full h-full object-cover transition-transform duration-300"
                 />
