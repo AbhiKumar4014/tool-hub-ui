@@ -6,6 +6,9 @@ import { CategorySection } from './components/CategorySection';
 import { TrendingSection } from './components/TrendingSection';
 import { NewsSection } from './components/NewsSection';
 import { TrendingPage } from './pages/TrendingPage';
+import { ToolDetails } from './pages/ToolDetails';
+import { CategoryPage } from './pages/CategoryPage';
+import { AINewsPage } from './pages/AINewsPage';
 
 function Home() {
   return (
@@ -28,6 +31,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/trending" element={<TrendingPage />} />
           <Route path="/trending/:period" element={<TrendingPage />} />
+          <Route path="/category/:category" element={<CategoryPage />} /> {/* New route for category pages */}
+          <Route path="/news" element={<AINewsPage />} /> {/* New route for AI News Page */}
+          <Route path="/tool/:id" element={<ToolDetails />} /> 
         </Routes>
       </Layout>
     </Router>
