@@ -58,34 +58,15 @@ export function Header() {
                   </div>
                 )}
               </div>
-              <div
-                className="relative"
-                onClick={() => setActiveDropdown(activeDropdown === 'trending' ? null : 'trending')}
-              >
-                <Link 
-                  to="/trending"
-                  className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
-                >
-                  <Zap className="w-4 h-4 mr-1" />
-                  Trending
-                  <ChevronDown className="w-4 h-4 ml-1" />
-                </Link>
-                {activeDropdown === 'trending' && (
-                  <div className="absolute left-0 mt-2 w-56 bg-white rounded-lg shadow-lg py-2 z-50">
-                    <Link to="/trending/today" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      Today's Trending
-                    </Link>
-                    <Link to="/trending/week" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      This Week
-                    </Link>
-                    <Link to="/trending/month" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                      This Month
-                    </Link>
-                  </div>
-                )}
-              </div>
               <Link 
-                to="/news"
+                to="/trending"
+                className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                <Zap className="w-4 h-4 mr-1" />
+                Trending
+              </Link>
+              <Link 
+                to="/ai-news"
                 className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
               >
                 <Newspaper className="w-4 h-4 mr-1" />
