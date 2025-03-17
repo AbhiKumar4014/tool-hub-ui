@@ -37,9 +37,8 @@ export function Header() {
             </Link>
             <nav className="hidden md:flex space-x-6">
               <div
-                className="relative group"
-                onMouseEnter={() => setActiveDropdown('categories')}
-                onMouseLeave={() => setActiveDropdown(null)}
+                className="relative"
+                onClick={() => setActiveDropdown(activeDropdown === 'categories' ? null : 'categories')}
               >
                 <button className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
                   Categories
@@ -60,9 +59,8 @@ export function Header() {
                 )}
               </div>
               <div
-                className="relative group"
-                onMouseEnter={() => setActiveDropdown('trending')}
-                onMouseLeave={() => setActiveDropdown(null)}
+                className="relative"
+                onClick={() => setActiveDropdown(activeDropdown === 'trending' ? null : 'trending')}
               >
                 <Link 
                   to="/trending"
