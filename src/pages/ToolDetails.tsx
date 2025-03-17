@@ -1,5 +1,5 @@
-import React from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { 
   Globe, 
   Building2, 
@@ -42,46 +42,55 @@ export interface AITool {
 
 export function ToolDetails() {
   const { id } = useParams();
-  const navigate = useNavigate(); // New back navigation hook
-  // In a real app, you would fetch the tool data based on the ID
-  // For now, we'll use mock data
-  const tool: AITool = {
-    id: "1",
-    name: "ChatGPT-4",
-    description: "Advanced language model with enhanced reasoning and creativity capabilities.",
-    category: "Text Generation",
-    subcategory: "Language Models",
-    url: "https://openai.com",
-    logoUrl: "https://images.unsplash.com/photo-1676320181466-7a364d4e2c53",
-    pricing: [
-      { type: "free", plan: "Basic", cost: "$0/month" },
-      { type: "premium", plan: "Pro", cost: "$20/month" }
-    ],
-    company: "OpenAI",
-    origin: "United States",
-    trending: true,
-    featured: true,
-    tags: ["AI", "NLP", "Machine Learning"],
-    features: [
-      "Advanced natural language processing",
-      "Multi-modal capabilities",
-      "Context awareness",
-      "Code generation and analysis"
-    ],
-    pros: [
-      "Highly accurate responses",
-      "Versatile applications",
-      "Regular updates",
-      "Strong developer support"
-    ],
-    cons: [
-      "Can be expensive for heavy usage",
-      "Occasional availability issues",
-      "May require prompt engineering"
-    ],
-    created: "2024-01-01",
-    updated: "2024-03-14"
-  };
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [tool, setTool] = useState<AITool | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (location.state && location.state.tool) {
+      // Tool data is available in location.state
+      setTool(location.state.tool);
+      setLoading(false);
+    } else {
+      // Tool data is not available, fetch it or show an error
+      setError("Tool data not available.");
+      setLoading(false);
+      // Optionally, you can fetch the tool data here based on the ID
+      // fetchToolDetails(id);
+    }
+  }, [location.state, id]);
+
+  if (loading) {
+    return (
+      <div className="pt-24 pb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <p>Loading tool details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="pt-24 pb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <p className="text-red-500">Error: {error}</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!tool) {
+    return (
+      <div className="pt-24 pb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <p>Tool not found.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="pt-24 pb-12">
