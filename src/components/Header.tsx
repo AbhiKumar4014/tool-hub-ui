@@ -76,8 +76,6 @@ export function Header() {
           </div>
           <div className="flex items-center space-x-6">
             <Search className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer" />
-            <Bell className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer" />
-            <User className="w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer" />
             <Menu className="md:hidden w-5 h-5 text-gray-600 hover:text-gray-900 cursor-pointer" />
           </div>
         </div>
