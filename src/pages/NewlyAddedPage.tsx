@@ -5,6 +5,7 @@ import getAiResponse from '../services/ai-chat-services';
 import { newToolsPrompt } from '../config/prompt';
 import { ToolDetailsView } from '../components/ToolDetailsView';
 import { Button } from '../components/ui/button';
+import { ToolCard } from '../components/ToolCard';
 
 export function NewlyAddedPage() {
     const [tools, setTools] = useState<any[]>([]);
@@ -137,40 +138,11 @@ export function NewlyAddedPage() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {tools.map((tool) => (
-                        <div
+                        <ToolCard
                             key={tool.id}
-                            className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 group cursor-pointer"
-                            onClick={() => handleToolClick(tool)}
-                        >
-                            <div className="relative aspect-video overflow-hidden">
-                                {/* Tool image */}
-                                <img
-                                    src={tool.logoUrl}
-                                    alt={tool.name}
-                                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                />
-                                <div className="absolute top-2 right-2 bg-white/90 px-3 py-1 rounded-full text-sm font-medium text-gray-600">
-                                    {tool.category}
-                                </div>
-                            </div>
-                            <div className="p-6">
-                                <div className="flex items-center justify-between mb-3">
-                                    <h3 className="text-xl font-semibold text-gray-900">{tool.name}</h3>
-                                    <ArrowUpRight className="w-5 h-5 text-gray-400 group-hover:text-gray-900 transition-colors" />
-                                </div>
-                                <p className="text-gray-600 mb-4">{tool.description}</p>
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center space-x-1">
-                                        <Star className="w-5 h-5 text-yellow-400" />
-                                        <span className="text-sm font-medium text-gray-900">{tool.rating}</span>
-                                    </div>
-                                    <div className="flex items-center space-x-1">
-                                        <Users className="w-5 h-5 text-gray-400" />
-                                        <span className="text-sm text-gray-600">{tool.users}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            tool={tool}
+                            onClick={handleToolClick}
+                        />
                     ))}
                 </div>
             </div>
