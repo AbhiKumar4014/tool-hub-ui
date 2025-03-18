@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, Search, Bell, User, ChevronDown, Newspaper, Zap } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const categories = [
   'Code Generation',
@@ -16,6 +16,7 @@ const categories = [
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,13 +26,17 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
+
   return (
     // Added border and shadow for the header menu (navbar) regardless of scroll
     <header className="fixed top-0 w-full z-50 border border-gray-300 shadow-lg bg-white transition-all duration-500">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-8">
-            <Link to="/" className="flex items-center">
+            <Link to="/" className={`flex items-center ${isActive('/') ? 'text-blue-600' : ''}`}>
               <span className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                 AI Hub
               </span>
@@ -41,7 +46,10 @@ export function Header() {
                 className="relative"
                 onClick={() => setActiveDropdown(activeDropdown === 'categories' ? null : 'categories')}
               >
-                <button className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">
+                <button className={`flex items-center text-sm font-medium transition-colors
+                  ${location.pathname.includes('/category') 
+                    ? 'text-blue-600' 
+                    : 'text-gray-600 hover:text-gray-900'}`}>
                   Categories
                   <ChevronDown className="w-4 h-4 ml-1" />
                 </button>
@@ -61,23 +69,31 @@ export function Header() {
               </div>
               <Link 
                 to="/trending"
-                className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                className={`flex items-center text-sm font-medium transition-colors
+                  ${isActive('/trending') 
+                    ? 'text-blue-600' 
+                    : 'text-gray-600 hover:text-gray-900'}`}
               >
                 <Zap className="w-4 h-4 mr-1" />
                 Trending
               </Link>
               <Link 
                 to="/ai-news"
-                className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                className={`flex items-center text-sm font-medium transition-colors
+                  ${isActive('/ai-news') 
+                    ? 'text-blue-600' 
+                    : 'text-gray-600 hover:text-gray-900'}`}
               >
                 <Newspaper className="w-4 h-4 mr-1" />
                 AI News
               </Link>
               <Link 
                 to="/newly-added"
-                className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+                className={`flex items-center text-sm font-medium transition-colors
+                  ${isActive('/newly-added') 
+                    ? 'text-blue-600' 
+                    : 'text-gray-600 hover:text-gray-900'}`}
               >
-                {/* ...if desired, add an icon here... */}
                 New Tools
               </Link>
             </nav>
