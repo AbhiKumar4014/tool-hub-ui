@@ -5,25 +5,25 @@ const toolInterface = `export interface AITool {
   category: string;
   subcategory?: string;
   url: string;
-  logoUrl: string;
-  pricing?: array  // pricing: [{type: , plan: , cost: , features: ["","",""]};
+  logoUrl: string  // valid logo url;
+  pricing?: array  // pricing: [{type: , plan: , cost: , features: ["","",""] recommended: true or false};
   company?: string;
   origin?: string;
   trending?: boolean;
   featured?: boolean;
   tags?: string[];
   features: string[];
-  pros: string[];
-  cons: string[];
+  pros: string[]  //more than 5 pros;
+  cons: string[]  //more than 5 cons;
   rating: number;
   users: string;
   reviews?: number;
-  useCases?: string[];
+  useCases?: string[] // better usecases more than 6;
   integrations?: string[];
   alternatives?: {
     id: string;
     name: string;
-    logoUrl: string;
+    logoUrl: string // valid logo url;
   }[];
   testimonials?: {
     author: string;
@@ -36,7 +36,7 @@ const toolInterface = `export interface AITool {
 }`;
 
 export const trendingToolsPrompt = (countryFilter: string) => {
-  let prompt = `Research and list the top 5 trending AI tools currently available`;
+  let prompt = `Research and list the top 10 trending AI tools currently available`;
   if (countryFilter) {
     prompt = `Research and list the top trending AI tools currently available`;
     prompt += ` from ${countryFilter}`;
@@ -62,7 +62,7 @@ export const trendingToolsPrompt = (countryFilter: string) => {
 };
 
 export const categoryToolsPrompt = (category: string, countryFilter: string) => {
-  let prompt = `Research and list the top 5 ${category} AI tools currently available`;
+  let prompt = `Research and list the top 10 ${category} AI tools currently available`;
   if (countryFilter) {
     prompt = `Research and list the top ${category} AI tools currently available`;
     prompt += ` from ${countryFilter}`;
@@ -86,7 +86,7 @@ export const categoryToolsPrompt = (category: string, countryFilter: string) => 
 };
 
 export const newToolsPrompt = () => {
-  let prompt = `Research and list the top 10 new AI tools that have recently been launched from last month to now`;
+  let prompt = `Research and list the top 20 newly launched AI tools currently available`;
   prompt += `. Include detailed information about:
     - Feature sets and capabilities
     - Early user reviews and feedback

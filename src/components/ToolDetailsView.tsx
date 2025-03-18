@@ -37,6 +37,8 @@ import { Avatar } from "./ui/avatar";
 import { Separator } from "./ui/separator";
 import { toast } from "react-toastify";
 
+const DEFAULT_LOGO = "https://imgcdn.stablediffusionweb.com/2025/3/4/29083c87-f2f8-4cc3-b5c0-f99d36a25c71.jpg"; // You can replace this with your default logo
+
 interface ToolDetailsViewProps {
   tool: AITool;
   onBack: () => void;
@@ -45,7 +47,8 @@ interface ToolDetailsViewProps {
 export function ToolDetailsView({ tool, onBack }: ToolDetailsViewProps) {
   const [bookmarked, setBookmarked] = useState(false);
   const [liked, setLiked] = useState(false);
-  
+  const [logoError, setLogoError] = useState(false);
+
   const handleBookmark = () => {
     setBookmarked(!bookmarked);
     toast.success(bookmarked ? "Removed from bookmarks" : "Added to bookmarks");
@@ -59,6 +62,10 @@ export function ToolDetailsView({ tool, onBack }: ToolDetailsViewProps) {
   const handleShare = () => {
     navigator.clipboard.writeText(window.location.href);
     toast.success("Link copied to clipboard");
+  };
+
+  const handleLogoError = () => {
+    setLogoError(true);
   };
 
   const renderStars = (rating: number | null) => {
@@ -99,12 +106,13 @@ export function ToolDetailsView({ tool, onBack }: ToolDetailsViewProps) {
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden mb-8">
           <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-8 text-white">
             <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-              {/* Logo */}
+              {/* Logo Section with Error Handling */}
               <div className="w-24 h-24 md:w-32 md:h-32 bg-white rounded-xl shadow-lg p-2 flex-shrink-0 relative">
                 <img
-                  src={tool.logoUrl}
+                  src={logoError ? DEFAULT_LOGO : tool.logoUrl}
                   alt={tool.name}
                   className="w-full h-full object-contain rounded-lg"
+                  onError={handleLogoError}
                 />
                 {tool.featured && (
                   <div className="absolute -top-3 -right-3 bg-yellow-400 rounded-full p-2 shadow-md">
