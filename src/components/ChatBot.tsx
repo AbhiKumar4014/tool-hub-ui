@@ -65,7 +65,7 @@ export function Chatbot() {
       )}
 
       {isChatOpen && (
-        <div className="bg-white rounded-xl shadow-2xl w-[380px] h-[600px] flex flex-col transform transition-all duration-300 ease-in-out">
+        <div className="bg-white rounded-xl shadow-2xl w-[400px] h-[580px] flex flex-col transform transition-all duration-300 ease-in-out">
           {/* Chat Header */}
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 rounded-t-xl flex justify-between items-center">
             <div className="flex items-center gap-3">
