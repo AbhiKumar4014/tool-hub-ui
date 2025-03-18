@@ -43,42 +43,48 @@ export function CategoryPage() {
   };
 
   useEffect(() => {
-      // Load data from localStorage on component mount
-      const storedData = localStorage.getItem(category as string);
-      if (storedData) {
-        try {
-          const parsedData = JSON.parse(storedData);
-          setCategoryTools(parsedData);
-        } catch (parseError) {
-          console.error("Error parsing stored JSON:", parseError);
-          localStorage.removeItem(category as string); // Remove invalid data from localStorage
-          fetchCategoryTools(); // Fetch data if stored data is invalid
-        }
-        setLoading(false); // Set loading to false after loading from localStorage
-      } else {
-        fetchCategoryTools(); // Fetch data if not in localStorage
+    // Load data from localStorage on component mount
+    const storedData = localStorage.getItem(category as string);
+    if (storedData) {
+      try {
+        const parsedData = JSON.parse(storedData);
+        setCategoryTools(parsedData);
+      } catch (parseError) {
+        console.error("Error parsing stored JSON:", parseError);
+        localStorage.removeItem(category as string); // Remove invalid data from localStorage
+        fetchCategoryTools(); // Fetch data if stored data is invalid
       }
-  
-      // Set up interval to refetch data every 5 hours
-      const intervalId = setInterval(fetchCategoryTools, refetchInterval);
-  
-      // Clean up interval on component unmount
-      return () => clearInterval(intervalId);
-    }, [fetchCategoryTools, category, refetchInterval]);
+      setLoading(false); // Set loading to false after loading from localStorage
+    } else {
+      fetchCategoryTools(); // Fetch data if not in localStorage
+    }
+
+    // Set up interval to refetch data every 5 hours
+    const intervalId = setInterval(fetchCategoryTools, refetchInterval);
+
+    // Clean up interval on component unmount
+    return () => clearInterval(intervalId);
+  }, [fetchCategoryTools, category, refetchInterval]);
 
   if (loading) {
     return (
       <div className="pt-24 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline mb-4">
-            <ChevronLeft className="w-5 h-5 mr-1" /> Back
-          </button>
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">{category} AI Tools</h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Discover the most popular {category} AI tools.
-            </p>
+          {/* Updated Header without border and drop shadow */}
+          <div className="flex items-center p-4 mb-4">
+            <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline">
+              <ChevronLeft className="w-5 h-5 mr-1" /> Back
+            </button>
+            <div className="flex-grow text-center">
+              <h1 className="text-4xl font-bold text-gray-900">{category} AI Tools</h1>
+            </div>
+            {/* Optionally, add an empty div to balance the back button */}
+            <div className="w-12" />
           </div>
+          <p className="text-lg text-gray-600 text-center max-w-2xl mx-auto mb-12">
+            Discover the most popular {category} AI tools.
+          </p>
+
           <p>Loading {category} AI tools...</p>
         </div>
       </div>
@@ -89,72 +95,87 @@ export function CategoryPage() {
     return (
       <div className="pt-24 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline mb-4">
-            <ChevronLeft className="w-5 h-5 mr-1" /> Back
-          </button>
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">{category} AI Tools</h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Discover the most popular {category} AI tools.
-            </p>
+          {/* Updated Header without border and drop shadow */}
+          <div className="flex items-center p-4 mb-4">
+            <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline">
+              <ChevronLeft className="w-5 h-5 mr-1" /> Back
+            </button>
+            <div className="flex-grow text-center">
+              <h1 className="text-4xl font-bold text-gray-900">{category} AI Tools</h1>
+            </div>
+            {/* Optionally, add an empty div to balance the back button */}
+            <div className="w-12" />
           </div>
+          <p className="text-lg text-gray-600 text-center max-w-2xl mx-auto mb-12">
+            Discover the most popular {category} AI tools.
+          </p>
+
           <p className="text-red-500">Error: {error}</p>
         </div>
       </div>
     );
   }
 
-  return (
-    <div className="pt-24 pb-12">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline mb-4">
-          <ChevronLeft className="w-5 h-5 mr-1" /> Back
-        </button>
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">{category} AI Tools</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+  if (!loading && !error) {
+    return (
+      <div className="pt-24 pb-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          {/* Combined Header */}
+          {/* Updated Header without border and drop shadow */}
+          <div className="flex items-center p-4 mb-4">
+            <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline">
+              <ChevronLeft className="w-5 h-5 mr-1" /> Back
+            </button>
+            <div className="flex-grow text-center">
+              <h1 className="text-4xl font-bold text-gray-900">{category} AI Tools</h1>
+            </div>
+            {/* Optionally, add an empty div to balance the back button */}
+            <div className="w-12" />
+          </div>
+          <p className="text-lg text-gray-600 text-center max-w-2xl mx-auto mb-12">
             Discover the most popular {category} AI tools.
           </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categoryTools.map((tool) => (
-            <div
-              key={tool.id}
-              className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 group cursor-pointer"
-              onClick={() => handleToolClick(tool)}
-            >
-              <div className="aspect-video relative overflow-hidden">
-                <img
-                  src={tool.logoUrl}
-                  alt={tool.name}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute top-2 right-2 bg-white/90 px-3 py-1 rounded-full text-sm font-medium text-gray-600">
-                  {tool.category}
-                </div>
-              </div>
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-xl font-semibold text-gray-900">{tool.name}</h3>
-                  <ArrowUpRight className="w-5 h-5 text-gray-400 group-hover:text-gray-900 transition-colors" />
-                </div>
-                <p className="text-gray-600 mb-4">{tool.description}</p>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-1">
-                    <Star className="w-5 h-5 text-yellow-400" />
-                    <span className="text-sm font-medium text-gray-900">{tool.rating}</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <Users className="w-5 h-5 text-gray-400" />
-                    <span className="text-sm text-gray-600">{tool.users}</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {categoryTools.map((tool) => (
+              <div
+                key={tool.id}
+                className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-100 hover:shadow-lg transition-all duration-300 group cursor-pointer"
+                onClick={() => handleToolClick(tool)}
+              >
+                <div className="aspect-video relative overflow-hidden">
+                  <img
+                    src={tool.logoUrl}
+                    alt={tool.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute top-2 right-2 bg-white/90 px-3 py-1 rounded-full text-sm font-medium text-gray-600">
+                    {tool.category}
                   </div>
                 </div>
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="text-xl font-semibold text-gray-900">{tool.name}</h3>
+                    <ArrowUpRight className="w-5 h-5 text-gray-400 group-hover:text-gray-900 transition-colors" />
+                  </div>
+                  <p className="text-gray-600 mb-4">{tool.description}</p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-1">
+                      <Star className="w-5 h-5 text-yellow-400" />
+                      <span className="text-sm font-medium text-gray-900">{tool.rating}</span>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <Users className="w-5 h-5 text-gray-400" />
+                      <span className="text-sm text-gray-600">{tool.users}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  return null;
 }

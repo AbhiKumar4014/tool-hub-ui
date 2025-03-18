@@ -26,7 +26,8 @@ export function Header() {
   }, []);
 
   return (
-    <header className={`fixed top-0 w-full z-50 transition-all duration-500 ${isScrolled ? 'bg-white shadow-md' : 'bg-gradient-to-b from-white/80 to-transparent'}`}>
+    // Added border and shadow for the header menu (navbar) regardless of scroll
+    <header className="fixed top-0 w-full z-50 border border-gray-300 shadow-lg bg-white transition-all duration-500">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-8">

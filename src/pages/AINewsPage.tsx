@@ -55,15 +55,29 @@ export function AINewsPage() {
     return (
       <div className="pt-24 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline mb-4">
-            <ChevronLeft className="w-5 h-5 mr-1" /> Back
-          </button>
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">AI News</h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Stay up-to-date with the latest news and developments in the world of AI.
-            </p>
+          {/* Updated Header without border and drop shadow */}
+          <div className="flex items-center p-4 mb-4">
+            <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline">
+              <ChevronLeft className="w-5 h-5 mr-1" /> Back
+            </button>
+            <div className="flex-grow text-center">
+              <h1 className="text-4xl font-bold text-gray-900">AI News</h1>
+            </div>
+            {/* Optionally, add an empty div to balance the back button */}
+            <div className="w-12" />
           </div>
+          <p className="text-lg text-gray-600 text-center max-w-2xl mx-auto mb-12">
+            Stay up-to-date with the latest news and developments in the world of AI.
+          </p>
+          {/* <div className="flex items-center border border-gray-300 shadow-lg p-4 mb-4">
+            <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline">
+              <ChevronLeft className="w-5 h-5 mr-1" /> Back
+            </button>
+            <h1 className="text-4xl font-bold text-gray-900 ml-4">AI News</h1>
+          </div>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-12">
+            Stay up-to-date with the latest news and developments in the world of AI.
+          </p> */}
           <p>Loading news...</p>
         </div>
       </div>
@@ -74,15 +88,20 @@ export function AINewsPage() {
     return (
       <div className="pt-24 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
-          <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline mb-4">
-            <ChevronLeft className="w-5 h-5 mr-1" /> Back
-          </button>
-          <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">AI News</h1>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Stay up-to-date with the latest news and developments in the world of AI.
-            </p>
+          {/* Updated Header without border and drop shadow */}
+          <div className="flex items-center p-4 mb-4">
+            <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline">
+              <ChevronLeft className="w-5 h-5 mr-1" /> Back
+            </button>
+            <div className="flex-grow text-center">
+              <h1 className="text-4xl font-bold text-gray-900">AI News</h1>
+            </div>
+            {/* Optionally, add an empty div to balance the back button */}
+            <div className="w-12" />
           </div>
+          <p className="text-lg text-gray-600 text-center max-w-2xl mx-auto mb-12">
+            Stay up-to-date with the latest news and developments in the world of AI.
+          </p>
           <p className="text-red-500">Error: {error}</p>
         </div>
       </div>
@@ -92,15 +111,20 @@ export function AINewsPage() {
   return (
     <div className="pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline mb-4">
-          <ChevronLeft className="w-5 h-5 mr-1" /> Back
-        </button>
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">AI News</h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Stay up-to-date with the latest news and developments in the world of AI.
-          </p>
+        {/* Updated Header without border and drop shadow */}
+        <div className="flex items-center p-4 mb-4">
+          <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline">
+            <ChevronLeft className="w-5 h-5 mr-1" /> Back
+          </button>
+          <div className="flex-grow text-center">
+            <h1 className="text-4xl font-bold text-gray-900">AI News</h1>
+          </div>
+          {/* Optionally, add an empty div to balance the back button */}
+          <div className="w-12" />
         </div>
+        <p className="text-lg text-gray-600 text-center max-w-2xl mx-auto mb-12">
+          Stay up-to-date with the latest news and developments in the world of AI.
+        </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {news.map((newsArticle) => (
