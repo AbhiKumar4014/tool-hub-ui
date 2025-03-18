@@ -3,12 +3,14 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Star, Users, ArrowUpRight, ChevronLeft } from 'lucide-react';
 import getAiResponse from '../services/ai-chat-services';
 import { categoryToolsPrompt } from '../config/prompt';
+import { ToolDetailsView } from '../components/ToolDetailsView';
 
 export function CategoryPage() {
   const { category } = useParams();
   const [categoryTools, setCategoryTools] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedTool, setSelectedTool] = useState<any>(null);
   const navigate = useNavigate();
   const refetchInterval = 5 * 60 * 60 * 1000; // 5 hours in milliseconds
 
@@ -39,7 +41,11 @@ export function CategoryPage() {
   }, [category, getAiResponse]);
 
   const handleToolClick = (tool: any) => {
-    navigate(`/tool/${tool.id}`, { state: { tool } });
+    setSelectedTool(tool);
+  };
+
+  const handleBack = () => {
+    setSelectedTool(null);
   };
 
   useEffect(() => {
@@ -65,6 +71,10 @@ export function CategoryPage() {
     // Clean up interval on component unmount
     return () => clearInterval(intervalId);
   }, [fetchCategoryTools, category, refetchInterval]);
+
+  if (selectedTool) {
+    return <ToolDetailsView tool={selectedTool} onBack={handleBack} />;
+  }
 
   if (loading) {
     return (

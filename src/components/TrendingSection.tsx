@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Star, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import getAiResponse from '../services/ai-chat-services';
 import { trendingToolsPrompt } from '../config/prompt';
+import { ToolDetailsView } from './ToolDetailsView';
 
 interface CacheData {
   data: any[];
@@ -14,6 +15,7 @@ export function TrendingSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedTool, setSelectedTool] = useState<any>(null);
   const total = trendingTools.length;
   const navigate = useNavigate();
 
@@ -86,7 +88,11 @@ export function TrendingSection() {
   const handleNext = () => setCurrentIndex((prev) => (prev + 3) % total);
 
   const handleToolClick = (tool: any) => {
-    navigate(`/tool/${tool.id}`, { state: { tool } });
+    setSelectedTool(tool);
+  };
+
+  const handleBack = () => {
+    setSelectedTool(null);
   };
 
   if (loading) {
@@ -105,6 +111,10 @@ export function TrendingSection() {
         <p className="text-red-500">Error: {error}</p>
       </section>
     );
+  }
+
+  if (selectedTool) {
+    return <ToolDetailsView tool={selectedTool} onBack={handleBack} />;
   }
 
   return (

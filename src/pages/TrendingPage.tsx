@@ -3,11 +3,13 @@ import { Star, Users, ArrowUpRight, ChevronLeft } from 'lucide-react';
 import getAiResponse from '../services/ai-chat-services';
 import { trendingToolsPrompt } from '../config/prompt';
 import { useNavigate } from 'react-router-dom';
+import { ToolDetailsView } from '../components/ToolDetailsView';
 
 export function TrendingPage() {
   const [trendingTools, setTrendingTools] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedTool, setSelectedTool] = useState<any>(null);
   const navigate = useNavigate();
 
   const localStorageKey = 'trendingToolsData';
@@ -42,7 +44,11 @@ export function TrendingPage() {
   }, [trendingToolsPrompt, getAiResponse]);
 
   const handleToolClick = (tool: any) => {
-    navigate(`/tool/${tool.id}`, { state: { tool } });
+    setSelectedTool(tool);
+  };
+
+  const handleBack = () => {
+    setSelectedTool(null);
   };
 
   useEffect(() => {
@@ -68,6 +74,10 @@ export function TrendingPage() {
     // Clean up interval on component unmount
     return () => clearInterval(intervalId);
   }, [fetchTrendingTools]);
+
+  if (selectedTool) {
+    return <ToolDetailsView tool={selectedTool} onBack={handleBack} />;
+  }
 
   if (loading) {
     return (
