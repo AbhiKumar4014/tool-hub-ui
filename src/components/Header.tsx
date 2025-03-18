@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, Search, Bell, User, ChevronDown, Newspaper, Zap } from 'lucide-react';
+import { Menu, Search, Bell, User, ChevronDown, Newspaper, Zap, Sparkles } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const categories = [
@@ -77,7 +77,7 @@ export function Header() {
                 to="/newly-added"
                 className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
               >
-                {/* ...if desired, add an icon here... */}
+                <Sparkles className="w-4 h-4 mr-1"/>
                 New Tools
               </Link>
             </nav>

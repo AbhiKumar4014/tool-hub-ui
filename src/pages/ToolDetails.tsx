@@ -102,12 +102,12 @@ export function ToolDetails() {
     <div className="pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Combined Header */}
-        <div className="flex items-center border border-gray-300 shadow-lg p-4 mb-6">
+        {/* <div className="flex items-center border border-gray-300 shadow-lg p-4 mb-6"> */}
           <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline">
             <ChevronLeft className="w-5 h-5 mr-1" /> Back
           </button>
-          <h1 className="text-3xl font-bold text-gray-900 ml-4">{tool.name}</h1>
-        </div>
+          {/* <h1 className="text-3xl font-bold text-gray-900 ml-4">{tool.name}</h1> */}
+        {/* </div> */}
         <div className="bg-white rounded-xl shadow-md p-6 mb-8">
           <div className="flex items-start gap-6">
             <img
