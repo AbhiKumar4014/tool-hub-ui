@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Star, Users, ChevronLeft, ChevronRight } from 'lucide-react';
 import getAiResponse from '../services/ai-chat-services';
 import { trendingToolsPrompt } from '../config/prompt';
+
+interface CacheData {
+  data: any[];
+  timestamp: number;
+}
 
 export function TrendingSection() {
   const [trendingTools, setTrendingTools] = useState([]);
@@ -9,25 +15,41 @@ export function TrendingSection() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const total = trendingTools.length;
+  const navigate = useNavigate();
+
+  const localStorageKey = 'trendingSectionData';
+  const cacheExpiryTime = 5 * 60 * 60 * 1000; // 5 hours in milliseconds
+
+  const isCacheValid = (cacheData: CacheData): boolean => {
+    const now = new Date().getTime();
+    return now - cacheData.timestamp < cacheExpiryTime;
+  };
 
   useEffect(() => {
     const fetchTrendingTools = async () => {
+      // Check cache first
+      const storedData = localStorage.getItem(localStorageKey);
+      if (storedData) {
+        try {
+          const parsedCache: CacheData = JSON.parse(storedData);
+          if (isCacheValid(parsedCache)) {
+            setTrendingTools(parsedCache.data);
+            setLoading(false);
+            return;
+          }
+        } catch (parseError) {
+          console.error("Error parsing stored JSON:", parseError);
+          localStorage.removeItem(localStorageKey);
+        }
+      }
+
+      // Fetch new data if cache is invalid or missing
       setLoading(true);
-      setError(null); // Clear any previous errors
+      setError(null);
       try {
         const prompt = trendingToolsPrompt('');
         const response = await getAiResponse(prompt);
         console.log(prompt, response);
-
-        // // Check if the response is empty or obviously invalid
-        // if (!response || typeof response !== 'string' || response.trim() === '') {
-        //   throw new Error("Invalid AI response: Empty or not a string");
-        // }
-
-        // // Basic check to see if the response looks like JSON
-        // if (!response.trim().startsWith('[') && !response.trim().startsWith('{')) {
-        //     throw new Error("Invalid AI response: Does not look like JSON");
-        // }
 
         const tools = eval(response);
 
@@ -35,6 +57,13 @@ export function TrendingSection() {
         if (!Array.isArray(tools)) {
             throw new Error("Invalid AI response: Parsed result is not an array");
         }
+
+        // Store in cache with timestamp
+        const cacheData: CacheData = {
+          data: tools,
+          timestamp: new Date().getTime()
+        };
+        localStorage.setItem(localStorageKey, JSON.stringify(cacheData));
         setTrendingTools(tools);
       } catch (error: any) {
         console.error("Failed to fetch trending tools:", error);
@@ -55,6 +84,10 @@ export function TrendingSection() {
 
   const handlePrev = () => setCurrentIndex((prev) => (prev - 3 + total) % total);
   const handleNext = () => setCurrentIndex((prev) => (prev + 3) % total);
+
+  const handleToolClick = (tool: any) => {
+    navigate(`/tool/${tool.id}`, { state: { tool } });
+  };
 
   if (loading) {
     return (
@@ -83,6 +116,7 @@ export function TrendingSection() {
             <div
               key={tool.id}
               className="bg-white rounded-lg overflow-hidden group cursor-pointer shadow-md border border-gray-100"
+              onClick={() => handleToolClick(tool)}
             >
               <div className="relative aspect-video">
                 <img
