@@ -72,6 +72,13 @@ export function Header() {
                 <Newspaper className="w-4 h-4 mr-1" />
                 AI News
               </Link>
+              <Link 
+                to="/newly-added"
+                className="flex items-center text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors"
+              >
+                {/* ...if desired, add an icon here... */}
+                New Tools
+              </Link>
             </nav>
           </div>
           <div className="flex items-center space-x-6">

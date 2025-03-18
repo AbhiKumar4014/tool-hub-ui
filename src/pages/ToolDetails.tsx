@@ -10,7 +10,8 @@ import {
   Clock, 
   RefreshCw,
   Star,
-  Crown
+  Crown,
+  ChevronLeft
 } from 'lucide-react';
 
 interface PricingTier {
@@ -50,15 +51,11 @@ export function ToolDetails() {
 
   useEffect(() => {
     if (location.state && location.state.tool) {
-      // Tool data is available in location.state
       setTool(location.state.tool);
       setLoading(false);
     } else {
-      // Tool data is not available, fetch it or show an error
       setError("Tool data not available.");
       setLoading(false);
-      // Optionally, you can fetch the tool data here based on the ID
-      // fetchToolDetails(id);
     }
   }, [location.state, id]);
 
@@ -66,6 +63,9 @@ export function ToolDetails() {
     return (
       <div className="pt-24 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline mb-4">
+            <ChevronLeft className="w-5 h-5 mr-1" /> Back
+          </button>
           <p>Loading tool details...</p>
         </div>
       </div>
@@ -76,6 +76,9 @@ export function ToolDetails() {
     return (
       <div className="pt-24 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline mb-4">
+            <ChevronLeft className="w-5 h-5 mr-1" /> Back
+          </button>
           <p className="text-red-500">Error: {error}</p>
         </div>
       </div>
@@ -86,6 +89,9 @@ export function ToolDetails() {
     return (
       <div className="pt-24 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline mb-4">
+            <ChevronLeft className="w-5 h-5 mr-1" /> Back
+          </button>
           <p>Tool not found.</p>
         </div>
       </div>
@@ -95,18 +101,9 @@ export function ToolDetails() {
   return (
     <div className="pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        {/* Breadcrumbs */}
-        <div className="mb-4 flex items-center space-x-2 text-sm">
-          <button 
-            onClick={() => navigate(-1)} 
-            className="text-blue-600 hover:underline"
-          >
-            ← Back
-          </button>
-          <span className="text-gray-500">/</span>
-          <span className="text-gray-500">Tool Details</span>
-        </div>
-        {/* Header Section */}
+        <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline mb-4">
+          <ChevronLeft className="w-5 h-5 mr-1" /> Back
+        </button>
         <div className="bg-white rounded-xl shadow-md p-6 mb-8">
           <div className="flex items-start gap-6">
             <img

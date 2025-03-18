@@ -6,7 +6,8 @@ import { TrendingPage } from './pages/TrendingPage';
 import { ToolDetails } from './pages/ToolDetails';
 import { CategoryPage } from './pages/CategoryPage';
 import { AINewsPage } from './pages/AINewsPage';
-
+import { NewlyAddedPage } from './pages/NewlyAddedPage';
+import { Chatbot } from './components/ChatBot';
 
 function App() {
   return (
@@ -18,7 +19,9 @@ function App() {
           <Route path="/tool/:id" element={<ToolDetails />} />
           <Route path="/category/:category" element={<CategoryPage />} />
           <Route path="/ai-news" element={<AINewsPage />} />
+          <Route path="/newly-added" element={<NewlyAddedPage />} />
         </Routes>
+        <Chatbot />
       </Layout>
     </Router>
   );

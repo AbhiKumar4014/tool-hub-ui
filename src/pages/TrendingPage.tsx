@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Star, Users, ArrowUpRight } from 'lucide-react';
+import { Star, Users, ArrowUpRight, ChevronLeft } from 'lucide-react';
 import getAiResponse from '../services/ai-chat-services';
 import { trendingToolsPrompt } from '../config/prompt';
 import { useNavigate } from 'react-router-dom';
@@ -73,6 +73,9 @@ export function TrendingPage() {
     return (
       <div className="pt-24 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline mb-4">
+            <ChevronLeft className="w-5 h-5 mr-1" /> Back
+          </button>
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Trending AI Tools</h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -89,6 +92,9 @@ export function TrendingPage() {
     return (
       <div className="pt-24 pb-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline mb-4">
+            <ChevronLeft className="w-5 h-5 mr-1" /> Back
+          </button>
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-gray-900 mb-4">Trending AI Tools</h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -104,6 +110,9 @@ export function TrendingPage() {
   return (
     <div className="pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <button onClick={() => navigate(-1)} className="flex items-center text-blue-600 hover:underline mb-4">
+          <ChevronLeft className="w-5 h-5 mr-1" /> Back
+        </button>
         <div className="text-center mb-12">
           <h1 className="text-4xl font-bold text-gray-900 mb-4">Trending AI Tools</h1>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
