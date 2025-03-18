@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Star, Users, ArrowUpRight, ChevronLeft } from 'lucide-react';
+import { Star, Users, ArrowUpRight, ChevronLeft, RefreshCw } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import getAiResponse from '../services/ai-chat-services';
 import { newToolsPrompt } from '../config/prompt';
 import { ToolDetailsView } from '../components/ToolDetailsView';
+import { Button } from '../components/ui/button';
 
 export function NewlyAddedPage() {
     const [tools, setTools] = useState<any[]>([]);
@@ -68,6 +69,11 @@ export function NewlyAddedPage() {
         setSelectedTool(null);
     };
 
+    const handleRefresh = async () => {
+        localStorage.removeItem(localStorageKey);
+        await fetchNewlyAddedTools();
+    };
+
     if (loading) {
         return (
             <div className="pt-24 pb-12">
@@ -114,8 +120,16 @@ export function NewlyAddedPage() {
                     <div className="flex-grow text-center">
                         <h1 className="text-4xl font-bold text-gray-900">Newly Added Tools</h1>
                     </div>
-                    {/* Optionally, add an empty div to balance the back button */}
-                    <div className="w-12" />
+                    <Button
+                        onClick={handleRefresh}
+                        variant="outline"
+                        size="sm"
+                        className="flex items-center gap-2"
+                        disabled={loading}
+                    >
+                        <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+                        Refresh
+                    </Button>
                 </div>
                 <p className="text-lg text-gray-600 text-center max-w-2xl mx-auto mb-12">
                     Discover the latest AI tools added to our platform.

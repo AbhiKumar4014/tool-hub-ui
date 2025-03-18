@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Star, Users, ArrowUpRight, ChevronLeft } from 'lucide-react';
+import { Star, Users, ArrowUpRight, ChevronLeft, RefreshCw } from 'lucide-react';
 import getAiResponse from '../services/ai-chat-services';
 import { trendingToolsPrompt } from '../config/prompt';
 import { useNavigate } from 'react-router-dom';
 import { ToolDetailsView } from '../components/ToolDetailsView';
+import { Button } from '../components/ui/button';
 
 export function TrendingPage() {
   const [trendingTools, setTrendingTools] = useState([]);
@@ -23,6 +24,7 @@ export function TrendingPage() {
       const response = await getAiResponse(prompt);
 
       try {
+        console.log("Response:", response);
         const tools = eval(response);
         console.log("AI Tools:", tools); // Log the response for inspection
         setTrendingTools(tools);
@@ -49,6 +51,11 @@ export function TrendingPage() {
 
   const handleBack = () => {
     setSelectedTool(null);
+  };
+
+  const handleRefresh = async () => {
+    localStorage.removeItem(localStorageKey);
+    await fetchTrendingTools();
   };
 
   useEffect(() => {
@@ -129,8 +136,16 @@ export function TrendingPage() {
             <div className="flex-grow text-center">
               <h1 className="text-4xl font-bold text-gray-900">Trending AI Tools</h1>
             </div>
-            {/* Optionally, add an empty div to balance the back button */}
-            <div className="w-12" />
+            <Button
+              onClick={handleRefresh}
+              variant="outline"
+              size="sm"
+              className="flex items-center gap-2"
+              disabled={loading}
+            >
+              <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+              Refresh
+            </Button>
           </div>
           <p className="text-lg text-gray-600 text-center max-w-2xl mx-auto mb-12">
             Discover the most popular AI tools that are making waves in the industry.
