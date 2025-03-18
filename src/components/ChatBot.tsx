@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageSquare, X, Send, Loader2 } from 'lucide-react';
+import { X, Send, Loader2 } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import getAiResponse from '../services/ai-chat-services';
+import chatbotIcon from '../assets/chatbot.png';
 
 interface Message {
   text: string;
@@ -27,17 +30,27 @@ export function Chatbot() {
     e.preventDefault();
     if (!inputMessage.trim()) return;
 
+    // Add user message to chat
     setMessages(prev => [...prev, { text: inputMessage, isBot: false }]);
+    const userMessage = `Please provide a concise and helpful response to: ${inputMessage}. Keep the response short and use markdown formatting where appropriate.`;
     setInputMessage('');
     setIsTyping(true);
 
-    setTimeout(() => {
+    try {
+      // Get AI response
+      const response = await getAiResponse(userMessage);
       setMessages(prev => [...prev, {
-        text: "Thanks for your message! I'm processing your request and will get back to you shortly.",
+        text: response,
         isBot: true
       }]);
+    } catch (error) {
+      setMessages(prev => [...prev, {
+        text: "Sorry, I encountered an error. Please try again.",
+        isBot: true
+      }]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   return (
@@ -45,9 +58,9 @@ export function Chatbot() {
       {!isChatOpen && (
         <button
           onClick={() => setIsChatOpen(true)}
-          className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 rounded-full shadow-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105"
+          className="text-white px-4 py-3 rounded-full shadow-lg  bg-[hsl(214_32%_85%)] transition-colors"
         >
-          <MessageSquare size={24} className="animate-pulse" />
+          <img src={chatbotIcon} alt="Chat" className="w-8 h-10" />
         </button>
       )}
 
@@ -57,7 +70,7 @@ export function Chatbot() {
           <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-4 rounded-t-xl flex justify-between items-center">
             <div className="flex items-center gap-3">
               <div className="relative">
-                <MessageSquare size={24} className="animate-pulse" />
+                <img src={chatbotIcon} alt="Chat" className="w-6 h-8 text-white animate-pulse" />
                 <div className="absolute bottom-0 right-0 w-2 h-2 bg-green-400 rounded-full"></div>
               </div>
               <div>
@@ -82,7 +95,7 @@ export function Chatbot() {
               >
                 {message.isBot && (
                   <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center">
-                    <MessageSquare size={14} className="text-white" />
+                    <img src={chatbotIcon} alt="Bot" className="w-4 h-6 text-white" />
                   </div>
                 )}
                 <div
@@ -92,14 +105,34 @@ export function Chatbot() {
                       : 'bg-blue-600 text-white'
                   } ${message.isBot ? 'rounded-bl-none' : 'rounded-br-none'}`}
                 >
-                  {message.text}
+                  {message.isBot ? (
+                    <div className="prose prose-sm max-w-none">
+                      <ReactMarkdown
+                        components={{
+                          p: ({children}) => <p className="m-0 text-gray-800">{children}</p>,
+                          a: ({href, children}) => (
+                            <a href={href} className="text-blue-500 hover:underline" target="_blank" rel="noopener noreferrer">
+                              {children}
+                            </a>
+                          ),
+                          ul: ({children}) => <ul className="list-disc list-inside my-1">{children}</ul>,
+                          ol: ({children}) => <ol className="list-decimal list-inside my-1">{children}</ol>,
+                          code: ({children}) => <code className="bg-gray-100 rounded px-1">{children}</code>
+                        }}
+                      >
+                        {message.text}
+                      </ReactMarkdown>
+                    </div>
+                  ) : (
+                    message.text
+                  )}
                 </div>
               </div>
             ))}
             {isTyping && (
               <div className="flex items-center gap-2 text-gray-500">
                 <div className="w-6 h-6 rounded-full bg-blue-600 flex items-center justify-center">
-                  <MessageSquare size={14} className="text-white" />
+                  <img src={chatbotIcon} alt="Bot" className="w-4 h-4 text-white" />
                 </div>
                 <div className="bg-white p-3 rounded-2xl rounded-bl-none shadow-sm">
                   <Loader2 className="w-4 h-4 animate-spin" />
